@@ -1,28 +1,47 @@
-import { useState } from "react";
+import {useReducer } from "react";
+
+const initialInputState = {
+    data: '',
+    isFocus: false
+}
+const inputStateReducer = (state, action) => {
+    if (action.type === 'INPUT') {
+        return {data: action.data, isFocus: state.isFocus};
+    }
+    if (action.type === 'BLUR'){
+        return {isFocus : true,data : state.data}
+    }
+    if (action.type === 'RESET'){
+        return {isFocus: false, data: '' }
+    }
+    return inputStateReducer ;
+};
+
 
 const useForm = (validateInput) => {
-    const [enterData, setEnterData] = useState('');
-    const [isFocus, setIsFocus] = useState(false);
+
+    const [inputState, dispatch] = useReducer(inputStateReducer, initialInputState)
 
     
-    const dataIsValid = validateInput(enterData) ;
-    let hasError = !dataIsValid && isFocus ;
+    
+    const dataIsValid = validateInput(inputState.data) ;
+    let hasError = !dataIsValid && inputState.isFocus ;
 
     const dataChangeHandler = (event) => {
-        setEnterData(event.target.value);
+        dispatch({type: 'INPUT', data: event.target.value});
+        
     }
 
     const dataOnBlurHandler = () => {
-        setIsFocus(true);
+        dispatch({type: 'BLUR'});
     }
     
     const reset = () => {
-        setEnterData('');
-        setIsFocus(false);
+        dispatch({type: 'RESET'});
     }
 
     return {
-        data: enterData,
+        data: inputState.data,
         isValid: dataIsValid,
         hasError: hasError,
         dataChangeHandler,
