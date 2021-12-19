@@ -44,10 +44,7 @@ const BasicForm = (props) => {
   const onSubmitHanlder = (event) => {
 
     event.preventDefault();
-    console.log(firstNameIsValid);
-    console.log(lastNameIsValid);
-    console.log(enteredEmailIsValid);
-    console.log(emailInputHasError);
+    
 
     if (!firstNameIsValid || !lastNameIsValid || !enteredEmailIsValid) {
       return ;
