@@ -1,9 +1,9 @@
 import { useState } from "react";
 const useInput = (validateValue) => {
     const [eneteredValue, setEnterValue] = useState('');
-    const [isTouched,setIsTouched] = useState('');
+    const [isTouched,setIsTouched] = useState(false);
 
-    const valueIsValid = eneteredValue.trim() !== '';
+    const valueIsValid = validateValue(eneteredValue)
     const hasError = !valueIsValid && isTouched ;
 
     const valueChangeHandler = (event) => {
